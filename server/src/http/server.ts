@@ -4,8 +4,6 @@ import { env } from '../env';
 
 const app = fastify({ logger: true });
 
-console.log({ teste: env.DATABASE_URL });
-
 app.listen({ port: env.PORT }, (err, address) => {
   if (err) {
     console.error(err);
