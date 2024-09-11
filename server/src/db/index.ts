@@ -11,6 +11,4 @@ export const client = postgres({
   password: env.DATABASE_PASSWORD,
 });
 
-console.log({ client });
-
 export const db = drizzle(client, { schema, logger: true });
