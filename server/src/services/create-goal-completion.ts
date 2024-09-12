@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { and, count, eq, gte, lte, sql } from 'drizzle-orm';
 
-import { db } from '../db';
-import { goals, goalsCompletions } from '../db/schema';
+import { db } from '@/db';
+import { goalCompletions, goals } from '@/db/schema';
 
 interface CreateGoalCompletionRequest {
   goalCode: string;
@@ -17,19 +17,19 @@ export async function createGoalCompletion({
   const goalsCompletionCounts = db.$with('goals_completion_count').as(
     db
       .select({
-        goalId: goalsCompletions.goalId,
-        completionCount: count(goalsCompletions.id).as('completionCount'),
+        goalId: goalCompletions.goalId,
+        completionCount: count(goalCompletions.id).as('completionCount'),
       })
-      .from(goalsCompletions)
-      .fullJoin(goals, eq(goalsCompletions.goalId, goals.id))
+      .from(goalCompletions)
+      .fullJoin(goals, eq(goalCompletions.goalId, goals.id))
       .where(
         and(
-          gte(goalsCompletions.createdAt, firstDayOfWeek),
-          lte(goalsCompletions.createdAt, lastDayOfWeek),
+          gte(goalCompletions.createdAt, firstDayOfWeek),
+          lte(goalCompletions.createdAt, lastDayOfWeek),
           eq(goals.code, goalCode)
         )
       )
-      .groupBy(goalsCompletions.goalId)
+      .groupBy(goalCompletions.goalId)
   );
 
   const result = await db
@@ -52,7 +52,7 @@ export async function createGoalCompletion({
   }
 
   const insertResult = await db
-    .insert(goalsCompletions)
+    .insert(goalCompletions)
     .values({ goalId })
     .returning();
 

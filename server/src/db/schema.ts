@@ -13,13 +13,13 @@ export const goals = pgTable('goals', {
     .defaultNow(),
 });
 
-export const goalsCompletions = pgTable('goal_completions', {
+export const goalCompletions = pgTable('goal_completions', {
   id: serial('id').primaryKey(),
   code: text('code')
     .notNull()
     .$defaultFn(() => createId()),
   goalId: integer('goal_id')
-    .references(() => goals.id)
+    .references(() => goals.id, { onDelete: 'cascade' })
     .notNull(),
   createdAt: timestamp('created_at', { withTimezone: true })
     .notNull()
