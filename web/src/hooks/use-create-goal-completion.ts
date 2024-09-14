@@ -7,13 +7,14 @@ interface CreateGoalCompletionRequest {
 }
 
 export function useCreateGoalCompletion() {
-  const { isPending, mutateAsync } = useMutation({
+  const { isPending, error, mutateAsync } = useMutation({
     mutationFn: async ({ goalCode }: CreateGoalCompletionRequest) =>
       await createGoalCompletion({ goalCode }),
   });
 
   return {
     isPendingCreateGoalsCompletion: isPending,
+    createGoalCompletionError: error,
     createGoalCompletion: mutateAsync,
   };
 }

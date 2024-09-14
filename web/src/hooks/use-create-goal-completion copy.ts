@@ -8,12 +8,13 @@ interface CreateGoalRequest {
 }
 
 export function useCreateGoal() {
-  const { isPending, mutateAsync } = useMutation({
+  const { isPending, error, mutateAsync } = useMutation({
     mutationFn: async (data: CreateGoalRequest) => await createGoal(data),
   });
 
   return {
     isPendingCreateGoal: isPending,
+    createGoalError: error,
     createGoal: mutateAsync,
   };
 }

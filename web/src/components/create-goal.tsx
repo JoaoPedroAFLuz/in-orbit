@@ -8,6 +8,7 @@ import { useCreateGoal } from '@hooks/use-create-goal-completion copy';
 import { useGetPendingGoals } from '@hooks/use-get-pending-goals';
 import { useGetSummary } from '@hooks/use-get-summary';
 
+import { AxiosError } from 'axios';
 import { Loader } from './loader';
 import { Button } from './ui/button';
 import {
@@ -34,16 +35,22 @@ export function CreateGoal() {
     resolver: zodResolver(createGoalSchema),
   });
 
-  const { createGoal, isPendingCreateGoal } = useCreateGoal();
+  const { isPendingCreateGoal, createGoalError, createGoal } = useCreateGoal();
   const { refetchSummary } = useGetSummary();
   const { refetchPendingGoals } = useGetPendingGoals();
 
   async function handleCreateGoal(data: CreateGoalForm) {
-    await createGoal(data);
+    try {
+      await createGoal(data);
 
-    await Promise.all([refetchSummary(), refetchPendingGoals()]);
+      await Promise.all([refetchSummary(), refetchPendingGoals()]);
 
-    toast.success('Meta criada com sucesso!');
+      toast.success('Meta criada com sucesso!');
+    } catch {
+      if (createGoalError instanceof AxiosError) {
+        toast.error(createGoalError.response?.data.message);
+      }
+    }
   }
 
   return (
