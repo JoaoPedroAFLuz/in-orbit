@@ -14,7 +14,7 @@ export async function getWeekPendingGoals() {
         id: goals.id,
         code: goals.code,
         title: goals.title,
-        desireWeeklyFrequency: goals.desireWeeklyFrequency,
+        desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
         createdAt: goals.createdAt,
       })
       .from(goals)
@@ -40,9 +40,9 @@ export async function getWeekPendingGoals() {
   const pendingGoals = await db
     .with(goalsCreatedUpToWeek, goalsCompletionCounts)
     .select({
-      goalCode: goalsCreatedUpToWeek.code,
+      code: goalsCreatedUpToWeek.code,
       title: goalsCreatedUpToWeek.title,
-      desireWeeklyFrequency: goalsCreatedUpToWeek.desireWeeklyFrequency,
+      desiredWeeklyFrequency: goalsCreatedUpToWeek.desiredWeeklyFrequency,
       completionCount: sql /*sql*/`
         COALESCE(${goalsCompletionCounts.completionCount}, 0)
       `.mapWith(Number),

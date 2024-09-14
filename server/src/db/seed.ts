@@ -11,15 +11,15 @@ async function seed() {
     .values([
       {
         title: 'Acordar cedo',
-        desireWeeklyFrequency: 5,
+        desiredWeeklyFrequency: 5,
       },
       {
         title: 'Ir ao Jiu-Jitsu',
-        desireWeeklyFrequency: 5,
+        desiredWeeklyFrequency: 5,
       },
       {
         title: 'Ir à academia',
-        desireWeeklyFrequency: 5,
+        desiredWeeklyFrequency: 5,
       },
     ])
     .returning();

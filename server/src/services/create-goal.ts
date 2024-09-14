@@ -4,12 +4,12 @@ import { getGoalByTitle } from './get-goal-by-code';
 
 interface CreateGoalRequest {
   title: string;
-  desireWeeklyFrequency: number;
+  desiredWeeklyFrequency: number;
 }
 
 export async function createGoal({
   title,
-  desireWeeklyFrequency,
+  desiredWeeklyFrequency,
 }: CreateGoalRequest) {
   const { goal: goalAlreadyExists } = await getGoalByTitle({
     title,
@@ -23,7 +23,7 @@ export async function createGoal({
 
   const result = await db
     .insert(goals)
-    .values({ title, desireWeeklyFrequency })
+    .values({ title, desiredWeeklyFrequency })
     .returning();
 
   const goal = result[0];

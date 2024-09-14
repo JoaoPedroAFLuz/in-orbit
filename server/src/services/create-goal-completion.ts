@@ -36,7 +36,7 @@ export async function createGoalCompletion({
     .with(goalsCompletionCounts)
     .select({
       goalId: goals.id,
-      desireWeeklyFrequency: goals.desireWeeklyFrequency,
+      desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
       completionCount: sql /*sql*/`
         COALESCE(${goalsCompletionCounts.completionCount}, 0)
       `.mapWith(Number),
@@ -45,9 +45,9 @@ export async function createGoalCompletion({
     .leftJoin(goalsCompletionCounts, eq(goalsCompletionCounts.goalId, goals.id))
     .where(eq(goals.code, goalCode));
 
-  const { goalId, desireWeeklyFrequency, completionCount } = result[0];
+  const { goalId, desiredWeeklyFrequency, completionCount } = result[0];
 
-  if (completionCount >= desireWeeklyFrequency) {
+  if (completionCount >= desiredWeeklyFrequency) {
     throw Error('Meta já foi alcançada nesta semana');
   }
 
